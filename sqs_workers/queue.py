@@ -58,7 +58,7 @@ class GenericQueue(object):
     def maker(cls, **kwargs):
         return partial(cls, **kwargs)
 
-    def process_queue(self, shutdown_policy=NEVER_SHUTDOWN, wait_second=10):
+    def process_queue(self, shutdown_policy=NEVER_SHUTDOWN, wait_second=10, max_messages=10):
         """
         Run worker to process one queue in the infinite loop
         """
@@ -86,7 +86,7 @@ class GenericQueue(object):
                 )
                 break
 
-    def process_batch(self, wait_seconds=0) -> BatchProcessingResult:
+    def process_batch(self, wait_seconds=0, max_messages=10) -> BatchProcessingResult:
         """
         Process a batch of messages from the queue (10 messages at most), return
         the number of successfully processed messages, and exit
@@ -96,7 +96,7 @@ class GenericQueue(object):
         if self.batching_policy.batching_enabled:
             return self._process_messages_in_batch(queue, wait_seconds)
 
-        return self._process_messages_individually(queue, wait_seconds)
+        return self._process_messages_individually(queue, wait_seconds, max_messages)
 
     def _process_messages_in_batch(self, queue, wait_seconds):
         messages = self.get_raw_messages(wait_seconds, self.batching_policy.batch_size)
@@ -117,8 +117,8 @@ class GenericQueue(object):
                 message.change_visibility(VisibilityTimeout=timeout)
         return result
 
-    def _process_messages_individually(self, queue, wait_seconds):
-        messages = self.get_raw_messages(wait_seconds, max_messages=1)
+    def _process_messages_individually(self, queue, wait_seconds, max_messages):
+        messages = self.get_raw_messages(wait_seconds, max_messages)
         result = BatchProcessingResult(self.name)
 
         for message in messages:

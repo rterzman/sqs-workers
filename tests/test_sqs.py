@@ -209,6 +209,14 @@ def test_arguments_validator_adds_kwargs(sqs, queue_name):
     assert worker_results["say_hello"] == "Anonymous"
 
 
+def test_arguments_validator_adds_multiple_messages(sqs, queue_name):
+    queue = sqs.queue(queue_name)
+    queue.connect_processor("say_hello", say_hello).delay()
+    queue.connect_processor("say_hello", say_hello).delay()
+    queue.connect_processor("say_hello", say_hello).delay()
+    assert queue.process_batch(wait_seconds=0, max_messages=2).succeeded_count() == 2
+
+
 def test_delay_accepts_converts_args_to_kwargs(sqs, queue_name):
     queue = sqs.queue(queue_name)
     say_hello_task = queue.connect_processor("say_hello", say_hello)
@@ -437,7 +445,7 @@ def test_batch_processor_delay_raises_type_error_if_non_kwargs_used(sqs, queue_n
 
 
 def test_batch_processor_calls_queue_multiple_times_if_max_messages_over_10(
-    sqs, queue_name
+        sqs, queue_name
 ):
     queue = sqs.queue(queue_name, batching_policy=batching.BatchMessages(batch_size=45))
     batch_say_hello_task = queue.connect_processor("batch_say_hello", batch_say_hello)
