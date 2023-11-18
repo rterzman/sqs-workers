@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sqs-workers"
-version = "0.5.12"
+version = "0.5.13"
 description = "That project is forced from https://pypi.org/project/sqs-workers/ (An opinionated queue processor for Amazon SQS)"
 authors = ["Extended by Rostyslav Terzman"]
 license = "MIT"
