@@ -1,6 +1,6 @@
 # SQS Workers
 
-An opinionated queue processor for Amazon SQS.
+If you do not work with Anyclip LTC you probably do not need that project. It was forced for internal tooling.
 
 ## Usage
 
