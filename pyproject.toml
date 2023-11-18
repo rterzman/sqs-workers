@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "sqs-workers"
-version = "0.1.1"
-description = "That project is forced from https://pypi.org/project/sqs-workers/"
+version = "0.5.12"
+description = "That project is forced from https://pypi.org/project/sqs-workers/ (An opinionated queue processor for Amazon SQS)"
+authors = ["Extended by Rostyslav Terzman"]
 license = "MIT"
 classifiers=[
     "Development Status :: 5 - Production/Stable",
@@ -13,7 +14,7 @@ classifiers=[
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
-homepage = "https://github.com/Doist/sqs-workers"
+homepage = "https://github.com/rterzman/sqs-workers"
 readme = "README.md"
 exclude = ['tests/']
 
